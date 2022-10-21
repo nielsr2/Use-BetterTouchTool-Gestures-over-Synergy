@@ -88,49 +88,51 @@ function make_subscription(client, watch, relative_path) {
   //       exists: true,
   //       type: 'f' } ] }
   client.on('subscription', function(resp) {
-    if (resp.subscription !== 'mysubscription') return;
+      if (resp.subscription !== 'mysubscription') return;
 
-    resp.files.forEach(function(file) {
-      // convert Int64 instance to javascript integer
-      const mtime_ms = +file.mtime_ms;
-      var l;
-      readLastLines.read(dir_of_interest + "/synergy.log", 3)
-        .then((lines) => {
-          if (lines.includes("leaving")) {
-            console.log("leaving");
-            exec('curl' + hostIP +'/trigger_named/?trigger_name=synergyoff', (err, output) => {
-              // once the command has completed, the callback function is called
-              if (err) {
-                // log and return if we encounter an error
-                console.error("could not execute command: ", err)
-                return
-              }
-            })
+      resp.files.forEach(function(file) {
+          // convert Int64 instance to javascript integer
+          const mtime_ms = +file.mtime_ms;
+          var l;
+          readLastLines.read(dir_of_interest + "/synergy.log", 3)
+            .then((lines) => {
+                if (lines.includes("leaving")) {
+                  console.log("leaving");
+                  exec('curl' + hostIP + '/trigger_named/?trigger_name=synergyoff', (err, output) => {
+                    // once the command has completed, the callback function is called
+                    if (err) {
+                      // log and return if we encounter an error
+                      console.error("could not execute command: ", err)
 
-          } else if (lines.includes("entering")) {
-            console.log("entering");
-            //open("btt://trigger_named/?trigger_name=synergyon");
-            exec('curl' + hostIP +'/trigger_named/?trigger_name=synergyon', (err, output) => {
-              // once the command has completed, the callback function is called
-              if (err) {
-                // log and return if we encounter an error
-                console.error("could not execute command: ", err)
-                return
-              }
-          }
-          else if (lines.includes("disconnected")) {
-            console.log("CLIENT DISCONNECTED");
-            exec('curl' + hostIP +'/trigger_named/?trigger_name=synergyoff', (err, output) => {
-              // once the command has completed, the callback function is called
-              if (err) {
-                // log and return if we encounter an error
-                console.error("could not execute command: ", err)
-                return
-              }
-            })
-          }
-        });
+                    }
+                  })
 
-    });
+                } else if (lines.includes("entering")) {
+                  console.log("entering");
+                  //open("btt://trigger_named/?trigger_name=synergyon");
+                  exec('curl' + hostIP + '/trigger_named/?trigger_name=synergyon', (err, output) => {
+                    // once the command has completed, the callback function is called
+                    if (err) {
+                      // log and return if we encounter an error
+                      console.error("could not execute command: ", err)
+
+                    }
+                  })
+                }
+
+               else if (lines.includes("disconnected")) {
+                console.log("CLIENT DISCONNECTED");
+                exec('curl' + hostIP + '/trigger_named/?trigger_name=synergyoff', (err, output) => {
+                  // once the command has completed, the callback function is called
+                  if (err) {
+                    // log and return if we encounter an error
+                    console.error("could not execute command: ", err)
+
+                  }
+                })
+
+            };
+
+      });
   });
-}
+})}
