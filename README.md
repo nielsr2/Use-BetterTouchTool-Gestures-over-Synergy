@@ -19,7 +19,7 @@ This guide shows you how to setup only a single trigger (4 finger swipe up -> ma
 
 **On Host:**
 Add a variable to your BTT user variables plist
-(~/Library/Application Support/BetterTouchTool/btt_user_variables. plist)
+(~/Library/Application Support/BetterTouchTool/btt_user_variables.plist)
 NOTE: can only be edited when BTT is closed.
 
 Use software like Plistedit Pro (create a variable called 'synergy', with a string-type value), or just replace the file with:
@@ -39,7 +39,8 @@ Use software like Plistedit Pro (create a variable called 'synergy', with a stri
 
 
 **On both computers:**
-	- create named triggers for some action (e.g. maximize window)
+	- create named triggers for some action (e.g. maximize window) (see example below)
+  - Ensure that webserver is enabled on bother computers, and note the clients IP for the next step.
 ```json
 
 [
@@ -63,18 +64,16 @@ Use software like Plistedit Pro (create a variable called 'synergy', with a stri
 ]
 
 ```
-- Ensure that webserver is enabled on bother computers, and note the clients IP for the next step.
+
 
 **On Host:**
-create a action for e.g. 4-finger swipe up call the following applescript (async in background) :
+create a action for e.g. 4-finger swipe up call the following AppleScript (async in background) :
 
 ```applescript
 tell application "BetterTouchTool"
 	set syn to get_string_variable "synergy"
-
 	if syn is equal to "0" then
     do shell script "curl http://YOURCLIENTIP:50019/trigger_named/?trigger_name=max"
-
 	else
     tell application "BetterTouchTool"
 			trigger_named "max"
@@ -94,3 +93,5 @@ end tell
 
 # DISCLAIMER
 * I haven't throughly tested this yet. You might wanna disable/backup your current BTT-settings.
+* Feel free to report any issue, send pull request with improvements.
+* Any security-issues this might introduce is YOUR concern;)
