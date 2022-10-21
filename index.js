@@ -98,7 +98,7 @@ function make_subscription(client, watch, relative_path) {
             .then((lines) => {
                 if (lines.includes("leaving")) {
                   console.log("leaving");
-                  exec('curl' + hostIP + '/trigger_named/?trigger_name=synergyoff', (err, output) => {
+                  exec(('curl' + hostIP + '/trigger_named/?trigger_name=synergyoff'), (err, output) => {
                     // once the command has completed, the callback function is called
                     if (err) {
                       // log and return if we encounter an error
@@ -110,7 +110,7 @@ function make_subscription(client, watch, relative_path) {
                 } else if (lines.includes("entering")) {
                   console.log("entering");
                   //open("btt://trigger_named/?trigger_name=synergyon");
-                  exec('curl' + hostIP + '/trigger_named/?trigger_name=synergyon', (err, output) => {
+                  exec(('curl' + hostIP + '/trigger_named/?trigger_name=synergyon'), (err, output) => {
                     // once the command has completed, the callback function is called
                     if (err) {
                       // log and return if we encounter an error
@@ -122,7 +122,7 @@ function make_subscription(client, watch, relative_path) {
 
                else if (lines.includes("disconnected")) {
                 console.log("CLIENT DISCONNECTED");
-                exec('curl' + hostIP + '/trigger_named/?trigger_name=synergyoff', (err, output) => {
+                exec(('curl' + hostIP + '/trigger_named/?trigger_name=synergyoff'), (err, output) => {
                   // once the command has completed, the callback function is called
                   if (err) {
                     // log and return if we encounter an error
