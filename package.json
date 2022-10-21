@@ -1,0 +1,16 @@
+{
+  "name": "synergy-watcher",
+  "version": "1.0.0",
+  "description": "checks if cursors passes between screens",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fb-watchman": "^2.0.2",
+    "open-uri": "^0.4.3",
+    "read-last-lines": "^1.8.0"
+  }
+}
